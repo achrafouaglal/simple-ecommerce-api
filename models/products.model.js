@@ -4,7 +4,7 @@ const ProductSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true, // Removes leading/trailing spaces
+        trim: true,
     },
     description: {
         type: String,
@@ -19,29 +19,32 @@ const ProductSchema = mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['Clothing', 'Accessories', 'Footwear', 'Others'], // Can add more categories as needed
     },
     images: [{
-        type: String, // URL of the image (you can store Cloudinary URLs or others)
+        type: String, 
         required: true,
     }],
     stock: {
         type: Number,
-        default: 0, // Default to 0 if not specified
+        default: 0, 
         min: [0, 'Stock cannot be negative'],
     },
     isActive: {
         type: Boolean,
-        default: true, // Product can be active or inactive (out of stock, discontinued, etc.)
+        default: true, 
     },
     createdAt: {
         type: Date,
-        default: Date.now, // Automatically set the creation date
+        default: Date.now,
     },
     updatedAt: {
         type: Date,
-        default: Date.now, // Automatically set the update date
+        default: Date.now,
     },
+    status:{
+        type:String,
+        default:"hero"
+    }
     },
     { timestamps: true }
 )

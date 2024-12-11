@@ -1,9 +1,15 @@
 const Router = require("express").Router();
 const productController = require("../controllers/product.controller");
 const multer = require("multer");
-const upload = multer({ storage: multer.memoryStorage() });
-const BodyParser = require("body-parser");
 
-Router.post("/product", upload.array("images"), BodyParser.urlencoded({ extended: true }), productController.postProduct);
+// Set up Multer to store files in memory
+const upload = multer({ storage: multer.diskStorage({
+    filename: function (req,file,cb){
+        cb(null , file.originalname)
+    }
+}) });
+
+
+Router.post("/product/add", upload.array("images"), productController.postProduct); // Uploading multiple images
 
 module.exports = Router;

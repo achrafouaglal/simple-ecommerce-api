@@ -15,8 +15,13 @@ const DB_URL = process.env.DB_URL;
 app.use(cors())
 app.use(express.json());
 
+app.set("view engine","ejs")
+app.set("views","views")
 
-app.get("/", require("./routes/index.route"))
+app.use("/", require("./routes/index.route"))
+app.get("/add",(req,res) => {
+    res.render("index")
+})
 app.use("/api",require("./routes/product.route"))
 
 mongoose.connect(DB_URL)
