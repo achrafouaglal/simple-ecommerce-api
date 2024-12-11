@@ -23,6 +23,7 @@ app.get("/add",(req,res) => {
     res.render("index")
 })
 app.use("/api",require("./routes/product.route"))
+app.use("/api",require("./routes/order.route"))
 
 mongoose.connect(DB_URL)
 

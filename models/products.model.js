@@ -29,6 +29,10 @@ const ProductSchema = mongoose.Schema({
         default: 0, 
         min: [0, 'Stock cannot be negative'],
     },
+    status:{
+        type:String,
+        default:"hero"
+    },
     isActive: {
         type: Boolean,
         default: true, 
@@ -41,10 +45,7 @@ const ProductSchema = mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    status:{
-        type:String,
-        default:"hero"
-    }
+    
     },
     { timestamps: true }
 )
@@ -62,10 +63,11 @@ exports.postProduct = async (data) => {
       images: data.images,
       stock: data.stock,
       isActive: data.isActive,
+      status:data.status,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
-
+    
     const savedProduct = await newProduct.save();
 
     return savedProduct;
@@ -83,12 +85,54 @@ exports.getProductById = async (id) => {
     }
 }
 
-exports.getProductByStatus = async (status) => {
+exports.getProductByQuery = async (q) => {
     try {
-        
-        const product = status == null ?  await Product.find({}): await Product.find({status:status});
+        const product = Object.keys(q).length === 0 
+            ? await Product.find({}) 
+            : await Product.find(q);
+
         return product;
     } catch (error) {
         return error;
     }
 }
+
+exports.DeleteProduct = async(id) => {
+    try {
+        const product = await Product.deleteOne({_id:id})
+        return product;
+    } catch (error) {
+        return error;
+    }
+}
+
+exports.updateProduct = async (id,product) => {
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+            id,
+            {$set:product},
+            {new:true}
+        )
+        return updatedProduct;
+    }catch (error) {
+        console.error("Error updating product:", error);
+        throw error;
+    }
+}
+
+exports.getProductsByPagination = async (page, limit) => {
+    try {
+      const skip = (page - 1) * limit;
+  
+      const products = await Product.find()
+        .skip(skip)
+        .limit(limit)
+        .exec();
+  
+      const totalProducts = await Product.countDocuments();
+  
+      return { products, totalProducts };
+    } catch (error) {
+      throw new Error("Error fetching orders with pagination");
+    }
+  };

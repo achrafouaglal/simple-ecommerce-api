@@ -1,62 +1,9 @@
-<form id="productForm" action="/api/product/add" method="POST" enctype="multipart/form-data">
-  <input type="text" name="name" placeholder="Product Name">
-  <input type="text" name="description" placeholder="Product Description">
-  <input type="number" name="price" placeholder="Price">
-  <input type="number" name="stock" placeholder="Stock">
-  <input type="text" name="category" placeholder="Category" value="Clothing">
-  <input type="file" name="images" multiple> <!-- 'images' is the field name -->
-  <input type="submit" value="Submit">
-</form>
-
-<!-- Progress bar -->
-<div id="progress-container" style="width: 100%; background-color: #f3f3f3; height: 30px; display: none;">
-  <div id="progress-bar" style="height: 100%; width: 0%; background-color: green;"></div>
-</div>
-
-  <script>
-    document.getElementById("productForm").addEventListener("submit", function(e) {
-        e.preventDefault(); 
-        // Get the form data
-        const formData = new FormData(this);
-
-        // Get the progress container and progress bar
-        const progressContainer = document.getElementById("progress-container");
-        const progressBar = document.getElementById("progress-bar");
-
-        // Show the progress container
-        progressContainer.style.display = "block";
-
-        // Create a new XMLHttpRequest
-        const xhr = new XMLHttpRequest();
-
-        // Set up the request
-        xhr.open("POST", this.action, true);
-
-        // Monitor the progress of the file upload
-        xhr.upload.addEventListener("progress", function(e) {
-            if (e.lengthComputable) {
-                // Calculate the percentage of the upload progress
-                const percent = (e.loaded / e.total) * 100;
-                console.log(percent)
-                progressBar.style.width = percent + "%"; // Update the progress bar width
-            }
-        });
-
-        // Handle the response from the server after the upload is complete
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                // The upload was successful, handle the response
-                alert("Product uploaded successfully!");
-            } else {
-                // There was an error
-                alert("Error uploading product.");
-            }
-
-            // Hide the progress bar after the upload is finished
-            progressContainer.style.display = "none";
-        };
-
-        // Send the form data (including files) with the request
-        xhr.send(formData);
-    });
-</script>
+<form action="/api/product" method="POST" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="Product Name">
+    <input type="text" name="description" placeholder="Product Description">
+    <input type="number" name="price" placeholder="Price">
+    <input type="number" name="stock" placeholder="Stock">
+    <input type="text" name="category" placeholder="category" value="Clothing">
+    <input type="file" name="images" multiple> <!-- 'images' is the field name -->
+    <input type="submit" value="Submit">
+  </form>
