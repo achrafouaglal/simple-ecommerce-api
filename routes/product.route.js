@@ -8,11 +8,11 @@ const upload = multer({ storage: multer.diskStorage({
     }
 }) });
 
-Router.get("/product",productController.getProduct)
-Router.get("/product/:id",productController.getProductById)
-Router.get("/product-list",productController.getProductList)
-Router.post("/product", upload.array("images"), productController.postProduct); 
-Router.delete("/product/:id" , productController.deleteProduct)
-Router.put("/product/:id", upload.array("images"), productController.changeProductData)
+Router.get("/api/product",productController.getProduct)
+Router.get("/api/product/:id",productController.getProductById)
+Router.get("/api/product-list",productController.getProductList)
+Router.post("/api/product", upload.array("images"), productController.postProduct); 
+Router.delete("/api/product/:id" , productController.deleteProduct)
+Router.put("/api/product/:id", upload.array("images"), productController.changeProductData)
 
 module.exports = Router;
