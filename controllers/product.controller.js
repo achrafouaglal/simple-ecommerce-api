@@ -75,7 +75,7 @@ exports.getProductById = async (req,res,next) => {
 
 exports.getProduct = async (req, res, next) => {
   try {
-    // const { userId } = req.auth; 
+    const { userId } = req.auth; 
     console.log(req)
     const adminUserId = process.env.ADMIN_USER_ID;
     const q = req.query;
