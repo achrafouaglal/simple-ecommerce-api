@@ -84,16 +84,16 @@ exports.getProduct = async (req, res, next) => {
     if (userId === adminUserId) {
       return res.status(200).json(product);
     } else {
-      const filteredProduct = product.map(({ id, name, image }) => ({
-        id,
-        name,
-        description,
-        price,
-        image,
-        status
-      }));
+      // const filteredProduct = product.map(({ id, name, image }) => ({
+      //   id,
+      //   name,
+      //   description,
+      //   price,
+      //   image,
+      //   status
+      // }));
 
-      return res.status(200).json(filteredProduct);
+      return res.status(200).json(product);
     }
   } catch (error) {
     console.error(error);
