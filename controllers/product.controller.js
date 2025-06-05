@@ -73,15 +73,35 @@ exports.getProductById = async (req,res,next) => {
 }
 
 
-exports.getProduct = async (req,res,next) => {
+exports.getProduct = async (req, res, next) => {
   try {
-      let q = req.query;
-      const product = await ProductModel.getProductByQuery(q)
-      res.status(200).json(product)
+    // const { userId } = req.auth; 
+    console.log(req)
+    const adminUserId = process.env.ADMIN_USER_ID;
+    const q = req.query;
+
+    const product = await ProductModel.getProductByQuery(q);
+
+    if (userId === adminUserId) {
+      return res.status(200).json(product);
+    } else {
+      const filteredProduct = product.map(({ id, name, image }) => ({
+        id,
+        name,
+        description,
+        price,
+        image,
+        status
+      }));
+
+      return res.status(200).json(filteredProduct);
+    }
   } catch (error) {
-      res.status(500).json({message:"error while get product"})
+    console.error(error);
+    res.status(500).json({ message: "Error while getting product" });
   }
-}
+};
+
 
 
 exports.deleteProduct = async (req,res,next) => {
