@@ -1,5 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 const ProductModel = require('../models/products.model');
+const redisClient = require("../redis/redis.client");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME, 
@@ -62,15 +63,25 @@ exports.postProduct = async (req, res) => {
 };
 
 
-exports.getProductById = async (req,res,next) => {
-    try {
-        let id = req.params.id;
-        const product = await ProductModel.getProductById(id);
-        res.status(200).json(product !== null ? product : {message:"Product not fount"})
-    } catch (error) {
-        res.status(400).json({error:error})
+exports.getProductById = async (req, res, next) => {
+  try {
+    let id = req.params.id;
+
+    const product = await ProductModel.getProductById(id);
+
+    if (product) {
+      await redisClient.setEx(`product:${id}`, 10, JSON.stringify(product));
+      console.log("from db")
+      res.status(200).json(product);
+    } else {
+      res.status(404).json({ message: "Product not found" });
     }
-}
+
+  } catch (error) {
+    res.status(400).json({ error: error.message || error });
+  }
+};
+
 
 
 exports.getProduct = async (req, res, next) => {
