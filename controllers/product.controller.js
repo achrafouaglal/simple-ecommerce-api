@@ -241,7 +241,7 @@ exports.getProductList = async (req,res,next) => {
       Products: products,
     });
   } catch (error) {
-    console.error("Error fetching orders:", error);
-    res.status(500).json({ message: "Failed to fetch orders.", error: error.message });
+    console.error("Error fetching Product List", error);
+    res.status(500).json({ message: "Failed to fetch Product List", error: error.message });
   }
 }
