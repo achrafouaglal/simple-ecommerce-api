@@ -6,7 +6,7 @@ const OrderSchema = new mongoose.Schema({
     required: true,
   },
   phone: {
-    type: Number,
+    type: String,
     required: true,
   },
   wilaya: {
@@ -46,11 +46,11 @@ const OrderSchema = new mongoose.Schema({
         ref: 'Product',
         required: true,
       },
-      productName: {
+      name: {
         type: String,
         required: true,
       },
-      productPrice: {
+      price: {
         type: Number,
         required: true, 
       },
@@ -100,6 +100,7 @@ exports.getOrderByQuery = async (q) => {
 
 exports.AddOrder = async (data) => {
     try {
+      console.log(data.name)
       let newOrder = new Order({
         name: data.name,
         phone: data.phone,
