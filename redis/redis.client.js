@@ -1,5 +1,6 @@
 const redis = require("redis");
-require("dotenv").config({ path: "../.env" }); // Load .env from one level up
+const path = require("path")
+require("dotenv").config({ path: path.join(__dirname, "../.env") }); 
 
 const client = redis.createClient({
   username: process.env.REDIS_USERNAME,

@@ -4,9 +4,11 @@ const cacheProduct = async (req, res, next) => {
   const { id } = req.params;
 
   try {
+    const d = new Date();
     const cachedData = await redisClient.get(`product:${id}`);
     if (cachedData) {
       console.log("from redis")
+      console.log(new Date() - d)
       return res.json(JSON.parse(cachedData));
     }
     next(); 
